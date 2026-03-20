@@ -69,7 +69,7 @@ jobs:
         echo "Build Target: ${{ inputs.BUILD_TARGET }}image"
               
     - name: Clean-up
-       run: |
+      run: |
         sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
         /usr/local/share/boost /opt/hostedtoolcache/CodeQL \
         /usr/share/swift /usr/local/.ghcup
@@ -99,19 +99,19 @@ jobs:
         echo "CHECK_LEGACY_BRANCH=false" >> $GITHUB_ENV
         cd sync
         ./orangefox_sync.sh --branch ${{ inputs.MANIFEST_BRANCH }} --path ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}
-    else
+        else
         echo "CHECK_LEGACY_BRANCH=true" >> $GITHUB_ENV
         cd sync/legacy
         ./orangefox_sync_legacy.sh --branch ${{ inputs.MANIFEST_BRANCH }} --path ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}
-    fi
-    # Validate sync actually created the directory
-    if [ ! -d "${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}" ]; then
+        fi
+         # Validate sync actually created the directory
+        if [ ! -d "${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}" ]; then
         echo "ERROR: Sync failed - fox_${{ inputs.MANIFEST_BRANCH }} directory not found!"
         df -h
         exit 1
-    fi
-    echo "Sync OK. Disk status:"
-    df -h
+        fi
+        echo "Sync OK. Disk status:"
+        df -h
     - name: Ensure Guava dependency exists
       if: inputs.MANIFEST_BRANCH == '14.1'
       run: |
